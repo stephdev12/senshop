@@ -99,7 +99,8 @@ export function CartDropdown() {
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="p-1 rounded hover:bg-secondary transition-colors"
+                            disabled={item.allow_multiple === false}
+                            className={`p-1 rounded hover:bg-secondary transition-colors ${item.allow_multiple === false ? 'opacity-30 cursor-not-allowed' : ''}`}
                           >
                             <Plus className="w-3 h-3" />
                           </button>

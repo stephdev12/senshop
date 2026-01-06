@@ -32,6 +32,7 @@ export function useProducts() {
           file_url: p.file_url,
           category: p.category || undefined,
           is_active: p.is_active ?? true,
+          allow_multiple: p.allow_multiple ?? true, // Default to true
         }));
 
         setProducts(formattedProducts);
@@ -70,6 +71,7 @@ export function useProducts() {
                 file_url: newProduct.file_url,
                 category: newProduct.category || undefined,
                 is_active: true,
+                allow_multiple: newProduct.allow_multiple ?? true,
               }, ...prev]);
             }
           } else if (payload.eventType === 'UPDATE') {
@@ -96,6 +98,7 @@ export function useProducts() {
                         file_url: updatedProduct.file_url,
                         category: updatedProduct.category || undefined,
                         is_active: updatedProduct.is_active ?? true,
+                        allow_multiple: updatedProduct.allow_multiple ?? true,
                       }
                     : p
                 );
@@ -110,6 +113,7 @@ export function useProducts() {
                   file_url: updatedProduct.file_url,
                   category: updatedProduct.category || undefined,
                   is_active: true,
+                  allow_multiple: updatedProduct.allow_multiple ?? true,
                 }, ...prev];
               }
             });

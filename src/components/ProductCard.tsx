@@ -15,9 +15,13 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   // Check if item is already in cart
   const inCart = items.some(item => item.id === product.id);
   
+  // Debug log
+  console.log(`Product: ${product.name}, allow_multiple: ${product.allow_multiple}, inCart: ${inCart}`);
+
   // Disable adding if product forbids multiples and is already in cart
-  // Default allow_multiple to true if undefined
-  const canAdd = product.allow_multiple !== false ? true : !inCart;
+  // We explicitly check for false to be safe, but let's be more robust
+  const isMultipleAllowed = product.allow_multiple !== false; 
+  const canAdd = isMultipleAllowed ? true : !inCart;
 
   const handleAddToCart = () => {
     if (!canAdd) return;
