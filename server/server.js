@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -253,6 +255,18 @@ app.post('/api/check-payment-status', async (req, res) => {
     console.error('Error:', error);
     return res.status(500).json({ error: error.message || 'Unknown error' });
   }
+});
+
+// =================== SERVE STATIC FILES (FRONTEND) ===================
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the 'dist' directory (located one level up)
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Handle React Routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
 // Start Server
