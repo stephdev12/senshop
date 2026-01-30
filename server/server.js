@@ -6,7 +6,11 @@ import crypto from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Explicitly load .env from the server directory
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,11 +24,17 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing Supabase configuration. Please check .env file.');
+  console.error('Missing Supabase configuration.');
+  console.error('Loaded env from:', path.join(__dirname, '.env'));
   if (!supabaseUrl) console.error(' - Missing: SUPABASE_URL');
   if (!supabaseServiceKey) console.error(' - Missing: SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
+
+// Debug Log (Masked Key)
+console.log('Supabase Config Loaded:');
+console.log(`- URL: ${supabaseUrl}`);
+console.log(`- Key: ${supabaseServiceKey.substring(0, 10)}...${supabaseServiceKey.slice(-5)}`);
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -260,8 +270,6 @@ app.post('/api/check-payment-status', async (req, res) => {
 });
 
 // =================== SERVE STATIC FILES (FRONTEND) ===================
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'dist' directory (located one level up)
 app.use(express.static(path.join(__dirname, '../dist')));
