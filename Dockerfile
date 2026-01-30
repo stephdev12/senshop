@@ -10,6 +10,14 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Build arguments for frontend
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_PUBLISHABLE_KEY
+
+# Set environment variables during build
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+
 # Build the frontend
 RUN npm run build
 

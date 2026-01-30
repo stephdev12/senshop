@@ -21,6 +21,8 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
   console.error('Missing Supabase configuration. Please check .env file.');
+  if (!supabaseUrl) console.error(' - Missing: SUPABASE_URL');
+  if (!supabaseServiceKey) console.error(' - Missing: SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
 
